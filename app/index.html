@@ -448,5 +448,45 @@
 </script>
 
   <a class="home-fab" href="../index.html" aria-label="На старт">🏠</a>
+
+<script>
+(function () {
+  var isTouch = (window.matchMedia && window.matchMedia('(hover: none)').matches) || ('ontouchstart' in window);
+  if (!isTouch) return;
+
+  // Make tooltips focusable for accessibility
+  document.querySelectorAll('.tooltip').forEach(function (el) {
+    if (!el.hasAttribute('tabindex')) el.setAttribute('tabindex', '0');
+    el.setAttribute('role', 'button');
+    el.setAttribute('aria-label', 'Подсказка');
+  });
+
+  function closeAll(except) {
+    document.querySelectorAll('.tooltip.open').forEach(function (el) {
+      if (!except || el !== except) el.classList.remove('open');
+    });
+  }
+
+  document.addEventListener('click', function (e) {
+    var t = e.target && e.target.closest ? e.target.closest('.tooltip') : null;
+    if (t) {
+      e.stopPropagation();
+      closeAll(t);
+      t.classList.toggle('open');
+      return;
+    }
+    closeAll();
+  });
+
+  // Close on scroll (mobile users scroll a lot)
+  window.addEventListener('scroll', function () { closeAll(); }, { passive: true });
+
+  // Close on Escape
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') closeAll();
+  });
+})();
+</script>
+
 </body>
 </html>
