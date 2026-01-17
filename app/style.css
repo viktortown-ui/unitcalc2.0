@@ -1020,9 +1020,16 @@ footer p {
 
 @media (hover: none) {
     .tooltip { cursor: pointer; }
+
+    /* On touch devices :hover can "stick" after a tap.
+       We suppress hover, but MUST allow the explicit .open state to show. */
     .tooltip:hover::after {
         opacity: 0;
         visibility: hidden;
+    }
+    .tooltip.open::after {
+        opacity: 1;
+        visibility: visible;
     }
 }
 
